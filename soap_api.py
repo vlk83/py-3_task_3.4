@@ -1,6 +1,5 @@
 import osa
 
-
 ############################################################################################################
 # Задача №1
 
@@ -10,20 +9,22 @@ def fahrenheit_to_celsius(value):
     response = client.service.ConvertTemp(Temperature=value, FromUnit='degreeFahrenheit', ToUnit='degreeCelsius')
     return response
 
+
 def average_temperature(file):
     with open(file, 'r', encoding='utf8') as f:
-        temps_celsius=[]
+        temps_list = []
         line = f.readline()
         while line:
-            temp = fahrenheit_to_celsius(float(line.replace('F', '').strip()))
-            temps_celsius.append(temp)
+            temp = float(line.split(' ')[0])
+            temps_list.append(temp)
             line = f.readline()
-        average_temperature = sum(temps_celsius) / len(temps_celsius)
-
+        average_temperature = round(fahrenheit_to_celsius(sum(temps_list) / len(temps_list)), 2)
     return average_temperature
 
+
 print('Cредняя за неделю температура по Цельсию:', end=' ')
-print(round(average_temperature('temps.txt'), 2))
+print(average_temperature('temps.txt'))
+
 
 ############################################################################################################
 # Задача №2
@@ -34,9 +35,10 @@ def convert_to_RUB(value, currency):
     response = client.service.ConvertToNum(toCurrency='RUB', fromCurrency=currency, amount=value, rounding=True)
     return response
 
+
 def money_for_journey(file):
     with open(file, 'r', encoding='utf8') as f:
-        money_list=[]
+        money_list = []
         line = f.readline()
         while line:
             value = float(line.split(' ')[1])
@@ -47,8 +49,10 @@ def money_for_journey(file):
         money_for_journey = int(round(sum(money_list) + 0.5, 0))
     return money_for_journey
 
+
 print('Количество денег на путешествие в рублях:', end=' ')
 print(money_for_journey('currencies.txt'))
+
 
 ############################################################################################################
 # Задача №3
@@ -59,17 +63,18 @@ def miles_to_kilometres(value):
     response = client.service.ChangeLengthUnit(LengthValue=value, fromLengthUnit='Miles', toLengthUnit='Kilometers')
     return response
 
+
 def journey_total_distance(file):
     with open(file, 'r', encoding='utf8') as f:
-        journey_distance_list=[]
+        journey_distance_list = []
         line = f.readline()
         while line:
-            value = float(line.split(' ')[1].replace(',', ''))
-            journey_distance = miles_to_kilometres(value)
+            journey_distance = float(line.split(' ')[1].replace(',', ''))
             journey_distance_list.append(journey_distance)
             line = f.readline()
-        journey_total_distance = round(sum(journey_distance_list), 2)
+        journey_total_distance = round(miles_to_kilometres(sum(journey_distance_list)), 2)
     return journey_total_distance
+
 
 print('Cуммарное расстояние пути в километрах с точностью до сотых:', end=' ')
 print(journey_total_distance('travel.txt'))
